@@ -5,6 +5,10 @@ cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
 #============================================================================
 project(ignition-transport11 VERSION 11.0.0)
 
+# Setting this policy enables using the
+# set command in CMake versions older than 3.13.13
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+
 #============================================================================
 # Find ignition-cmake
 #============================================================================
@@ -33,6 +37,13 @@ endif()
 # Search for project-specific dependencies
 #============================================================================
 message(STATUS "\n\n-- ====== Finding Dependencies ======")
+
+
+# This option is needed to use the PROTOBUF_GENERATE_CPP
+# in case protobuf is found with the CMake config files
+# It needs to be set before any find_package(...) call
+# as protobuf could be find transitively by any dependency
+set(protobuf_MODULE_COMPATIBLE TRUE)
 
 #--------------------------------------
 # Find Protobuf
