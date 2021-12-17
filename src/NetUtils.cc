@@ -379,6 +379,14 @@ inline namespace IGNITION_TRANSPORT_VERSION_NAMESPACE
     GetUserName(buffer, &usernameLen);
     return buffer;
 #else
+    // First, try to get the username through the standard environment variable for it.
+    const auto user_variable = std::getenv("USER");
+    if (user_variable)
+    {
+      return user_variable;
+    }
+
+    // No USER variable, request it from the system.
     struct passwd pd;
     struct passwd *pdResult;
     Uuid uuid;
